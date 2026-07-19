@@ -1,4 +1,9 @@
-package main.java.com.example.cincuentazoproyecto.model;
+package com.example.cincuentazoproyecto.model;
 
-public class JugadorMaquina {
+public class JugadorMaquina extends Jugador{
+
+    public JugadorMaquina(String nombre){
+        super(nombre);
+    }
+
 }

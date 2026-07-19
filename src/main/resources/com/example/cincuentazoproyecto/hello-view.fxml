@@ -1,16 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.cincuentazoproyecto.HelloController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<?import javafx.scene.image.ImageView?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.cincuentazoproyecto.controller.HelloController">
 
-  <Label fx:id="welcomeText"/>
-  <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+  <top>
+    <VBox alignment="CENTER" spacing="10" BorderPane.alignment="CENTER">
+      <padding>
+        <Insets top="20" bottom="10"/>
+      </padding>
+
+      <Label text="CINCUENTAZO"
+             style="-fx-font-size:30; -fx-font-weight:bold;"/>
+    </VBox>
+  </top>
+
+  <center>
+
+    <VBox alignment="CENTER" spacing="25">
+
+      <GridPane hgap="80" vgap="35" alignment="CENTER">
+
+        <!-- CPU 1 -->
+        <VBox GridPane.columnIndex="1"
+              GridPane.rowIndex="0"
+              alignment="CENTER"
+              spacing="5">
+
+          <Label text="CPU 1"/>
+
+          <ImageView fx:id="imgCPU1"
+                     fitWidth="90"
+                     fitHeight="130"
+                     preserveRatio="true"/>
+
+          <Label fx:id="lblPuntosCPU1"
+                 text="Puntos: 0"/>
+
+        </VBox>
+
+        <!-- CPU 2 -->
+
+        <VBox GridPane.columnIndex="0"
+              GridPane.rowIndex="1"
+              alignment="CENTER"
+              spacing="5">
+
+          <Label text="CPU 2"/>
+
+          <ImageView fx:id="imgCPU2"
+                     fitWidth="90"
+                     fitHeight="130"
+                     preserveRatio="true"/>
+
+          <Label fx:id="lblPuntosCPU2"
+                 text="Puntos: 0"/>
+
+        </VBox>
+
+        <!-- CPU 3 -->
+
+        <VBox GridPane.columnIndex="2"
+              GridPane.rowIndex="1"
+              alignment="CENTER"
+              spacing="5">
+
+          <Label text="CPU 3"/>
+
+          <ImageView fx:id="imgCPU3"
+                     fitWidth="90"
+                     fitHeight="130"
+                     preserveRatio="true"/>
+
+          <Label fx:id="lblPuntosCPU3"
+                 text="Puntos: 0"/>
+
+        </VBox>
+
+        <!-- Jugador -->
+
+        <VBox GridPane.columnIndex="1"
+              GridPane.rowIndex="2"
+              alignment="CENTER"
+              spacing="5">
+
+          <Label text="JUGADOR"/>
+
+          <ImageView fx:id="imgJugador"
+                     fitWidth="90"
+                     fitHeight="130"
+                     preserveRatio="true"/>
+
+          <Label fx:id="lblPuntosJugador"
+                 text="Puntos: 0"/>
+
+        </VBox>
+
+      </GridPane>
+
+      <Button fx:id="btnJugar"
+              text="Jugar una ronda"
+              onAction="#jugarRonda"/>
+
+    </VBox>
+
+  </center>
+
+  <bottom>
+
+    <TextArea fx:id="txtSalida"
+              prefRowCount="10"
+              editable="false"
+              wrapText="true"/>
+
+  </bottom>
+
+</BorderPane>
