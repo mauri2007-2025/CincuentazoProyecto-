@@ -7,36 +7,75 @@ public abstract class Jugador {
     protected String nombre;
     protected ArrayList<Carta> mano;
 
-    public Jugador(String nombre){
+    // Nuevo atributo
+    private boolean eliminado;
+
+    public Jugador(String nombre) {
+
         this.nombre = nombre;
-        mano = new ArrayList<>();
+        this.mano = new ArrayList<>();
+        this.eliminado = false;
+
     }
 
-    public void recibirCarta(Carta carta){
-        mano.add(carta);
-    }
-
-    public ArrayList<Carta> getMano(){
-        return mano;
-    }
-
-    public String getNombre(){
+    public String getNombre() {
         return nombre;
     }
 
-    public int calcularPuntos(){
+    public ArrayList<Carta> getMano() {
+        return mano;
+    }
+
+    public void recibirCarta(Carta carta) {
+        mano.add(carta);
+    }
+
+    public void jugarCarta(Carta carta) {
+        mano.remove(carta);
+    }
+
+    public int calcularPuntos() {
 
         int suma = 0;
 
-        for(Carta carta : mano){
+        for (Carta carta : mano) {
             suma += carta.getPuntos();
         }
 
         return suma;
     }
 
-    public boolean estaEliminado(){
-        return calcularPuntos() > 50;
+    public boolean tieneCartas() {
+        return !mano.isEmpty();
+    }
+
+    // =======================
+    // NUEVOS MÉTODOS
+    // =======================
+
+    public boolean estaEliminado() {
+        return eliminado;
+    }
+
+    public void eliminar() {
+        eliminado = true;
+    }
+
+    public Carta getCarta(int posicion) {
+
+        if (posicion < 0 || posicion >= mano.size()) {
+            return null;
+        }
+
+        return mano.get(posicion);
+    }
+
+    public void eliminarCarta(int posicion) {
+
+        if (posicion >= 0 && posicion < mano.size()) {
+            mano.remove(posicion);
+        }
+
     }
 
 }

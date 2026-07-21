@@ -10,19 +10,20 @@ public enum Valor {
     SEIS(6),
     SIETE(7),
     OCHO(8),
-    NUEVE(9),
+    NUEVE(0),
     DIEZ(10),
-    J(10),
-    Q(10),
-    K(10);
+    J(-10),
+    Q(-10),
+    K(-10);
 
     private final int puntos;
 
-    Valor(int puntos){
+    Valor(int puntos) {
         this.puntos = puntos;
     }
 
-    public int getPuntos(){
+    public int getPuntos() {
         return puntos;
     }
+
 }

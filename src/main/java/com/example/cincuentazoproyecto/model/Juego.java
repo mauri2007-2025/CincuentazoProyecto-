@@ -8,83 +8,225 @@ public class Juego {
     private Mesa mesa;
     private ArrayList<Jugador> jugadores;
 
+    private int turnoActual;
+
     public Juego() {
 
         mazo = new Mazo();
-
         mesa = new Mesa();
-
         jugadores = new ArrayList<>();
 
+        turnoActual = 0;
     }
 
-    public void agregarJugador(Jugador jugador){
+    //========================
+    // GETTERS
+    //========================
 
-        jugadores.add(jugador);
-
-    }
-
-    public ArrayList<Jugador> getJugadores(){
-
+    public ArrayList<Jugador> getJugadores() {
         return jugadores;
-
     }
 
-    public Mazo getMazo(){
-
-        return mazo;
-
-    }
-
-    public Mesa getMesa(){
-
+    public Mesa getMesa() {
         return mesa;
+    }
+
+    public Mazo getMazo() {
+        return mazo;
+    }
+
+    public Jugador getJugadorActual() {
+        return jugadores.get(turnoActual);
+    }
+
+    //========================
+    // JUGADORES
+    //========================
+
+    public void agregarJugador(Jugador jugador) {
+        jugadores.add(jugador);
+    }
+
+    public void siguienteTurno() {
+
+        turnoActual++;
+
+        if (turnoActual >= jugadores.size()) {
+            turnoActual = 0;
+        }
 
     }
-    public Carta repartirCarta(Jugador jugador){
 
-        if(mazo.estaVacio()){
-            return null;
+    //========================
+    // INICIO DEL JUEGO
+    //========================
+
+    public void repartirManosIniciales() {
+
+        for (int i = 0; i < 4; i++) {
+
+            for (Jugador jugador : jugadores) {
+
+                Carta carta = mazo.sacarCarta();
+
+                if (carta != null) {
+                    jugador.recibirCarta(carta);
+                }
+
+            }
+
         }
+
+    }
+
+    public void iniciarMesa() {
 
         Carta carta = mazo.sacarCarta();
 
-        jugador.recibirCarta(carta);
-
-        return carta;
-    }
-
-    public void repartirATodos(){
-
-        for(Jugador jugador : jugadores){
-
-            repartirCarta(jugador);
-
+        if (carta != null) {
+            mesa.ponerCarta(carta);
         }
 
     }
 
-    public void eliminarJugadores(){
+    //========================
+    // REGLAS
+    //========================
 
-        jugadores.removeIf(Jugador::estaEliminado);
+    public boolean puedeJugar(Carta carta) {
 
-    }
-
-    public boolean juegoTerminado(){
-
-        return jugadores.size() == 1;
+        return mesa.puedeJugar(carta);
 
     }
 
-    public Jugador obtenerGanador(){
+    //========================
+    // JUGAR UNA CARTA (HUMANO)
+    //========================
 
-        if(juegoTerminado()){
+    public boolean jugarCarta(Jugador jugador, int posicion) {
 
-            return jugadores.get(0);
+        Carta carta = jugador.getCarta(posicion);
+
+        if (carta == null) {
+            return false;
+        }
+
+        if (!puedeJugar(carta)) {
+            return false;
+        }
+
+        jugador.eliminarCarta(posicion);
+
+        mesa.ponerCarta(carta);
+
+        Carta nueva = mazo.sacarCarta();
+
+        if (nueva != null) {
+            jugador.recibirCarta(nueva);
+        }
+
+        return true;
+
+    }
+
+    //========================
+    // TURNO CPU
+    //========================
+
+    public Carta jugarTurnoCPU(Jugador jugador) {
+
+        for (int i = 0; i < jugador.getMano().size(); i++) {
+
+            Carta carta = jugador.getCarta(i);
+
+            if (puedeJugar(carta)) {
+
+                jugarCarta(jugador, i);
+
+                return carta;
+
+            }
 
         }
 
         return null;
+
+    }
+
+    //========================
+    // VALIDAR JUGADAS
+    //========================
+
+    public boolean jugadorTieneJugada(Jugador jugador) {
+
+        for (Carta carta : jugador.getMano()) {
+
+            if (puedeJugar(carta)) {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+
+    //========================
+    // ELIMINAR JUGADORES
+    //========================
+
+    public void eliminarJugadoresSinJugada() {
+
+        for (Jugador jugador : jugadores) {
+
+            if (!jugador.estaEliminado()
+                    && !jugadorTieneJugada(jugador)) {
+
+                jugador.eliminar();
+
+            }
+
+        }
+
+    }
+
+    //========================
+    // FIN DEL JUEGO
+    //========================
+
+    public boolean juegoTerminado() {
+
+        int vivos = 0;
+
+        for (Jugador jugador : jugadores) {
+
+            if (!jugador.estaEliminado()) {
+                vivos++;
+            }
+
+        }
+
+        return vivos == 1;
+
+    }
+
+    public Jugador obtenerGanador() {
+
+        for (Jugador jugador : jugadores) {
+
+            if (!jugador.estaEliminado()) {
+                return jugador;
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public boolean jugadorSigueEnJuego(Jugador jugador) {
+
+        return !jugador.estaEliminado();
 
     }
 
